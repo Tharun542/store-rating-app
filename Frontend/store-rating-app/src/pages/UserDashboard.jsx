@@ -15,14 +15,18 @@ export default function UserDashboard() {
   const [order, setOrder] = useState("ASC");
 
   const fetchStores = async () => {
+    if (!user) return;
     const res = await getAllStores(user.token, search, order);
     setStores(res.data);
   };
 
   useEffect(() => {
-    if (!user) return navigate("/login");
+    if (!user) {
+      navigate("/login");
+      return;
+    }
     fetchStores();
-  }, []);
+  }, [user, search, order, navigate]);
 
   return (
     <Container>
@@ -43,7 +47,7 @@ export default function UserDashboard() {
       </Button>
 
       {stores.map((s) => (
-        <StoreCard key={s.id} store={s} userToken={user.token} />
+        <StoreCard key={s.id} store={s} userToken={user?.token} />
       ))}
     </Container>
   );

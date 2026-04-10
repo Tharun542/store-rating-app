@@ -9,10 +9,12 @@ export default function OwnerDashboard() {
   const [data, setData] = useState({});
 
   useEffect(() => {
+    if (!user) return;
+
     getOwnerDashboard(user.token).then((res) =>
       setData(res.data)
     );
-  }, []);
+  }, [user]);
 
   return (
     <Container>

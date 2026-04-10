@@ -31,21 +31,25 @@ export default function AdminDashboard() {
     role: "USER"
   });
 
-  useEffect(() => {
-    getAdminDashboard(user.token).then((res) => setData(res.data));
-    fetchUsers();
-    fetchStores();
-  }, []);
-
   const fetchUsers = async () => {
+    if (!user) return;
     const res = await getUsers(user.token, filters);
     setUsers(res.data);
   };
 
   const fetchStores = async () => {
+    if (!user) return;
     const res = await getStoresAdmin(user.token);
     setStores(res.data);
   };
+
+  useEffect(() => {
+    if (!user) return;
+
+    getAdminDashboard(user.token).then((res) => setData(res.data));
+    fetchUsers();
+    fetchStores();
+  }, [user, filters]);
 
   const handleCreateUser = async () => {
     await createUser(newUser, user.token);
