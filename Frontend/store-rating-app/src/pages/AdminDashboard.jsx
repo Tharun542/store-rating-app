@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useCallback } from "react";
 import { Container, Typography, TextField, Button } from "@mui/material";
 import {
   getAdminDashboard,
@@ -31,17 +31,17 @@ export default function AdminDashboard() {
     role: "USER"
   });
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     if (!user) return;
     const res = await getUsers(user.token, filters);
     setUsers(res.data);
-  };
+  }, [user, filters]);
 
-  const fetchStores = async () => {
+  const fetchStores = useCallback(async () => {
     if (!user) return;
     const res = await getStoresAdmin(user.token);
     setStores(res.data);
-  };
+  }, [user]);
 
   useEffect(() => {
     if (!user) return;
@@ -49,7 +49,7 @@ export default function AdminDashboard() {
     getAdminDashboard(user.token).then((res) => setData(res.data));
     fetchUsers();
     fetchStores();
-  }, [user, filters]);
+  }, [user, fetchUsers, fetchStores]);
 
   const handleCreateUser = async () => {
     await createUser(newUser, user.token);
@@ -65,7 +65,6 @@ export default function AdminDashboard() {
       <Typography>Total Stores: {data.totalStores}</Typography>
       <Typography>Total Ratings: {data.totalRating}</Typography>
 
-      {/* CREATE USER */}
       <Typography variant="h6">Create User</Typography>
       {Object.keys(newUser).map((key) => (
         <TextField
@@ -78,7 +77,6 @@ export default function AdminDashboard() {
       ))}
       <Button onClick={handleCreateUser}>Create</Button>
 
-      {/* FILTER */}
       <Typography variant="h6">Filter Users</Typography>
       {Object.keys(filters).map((key) => (
         <TextField
@@ -91,14 +89,12 @@ export default function AdminDashboard() {
       ))}
       <Button onClick={fetchUsers}>Apply</Button>
 
-      {/* USERS */}
       {users.map((u) => (
         <Typography key={u.id}>
           {u.name} - {u.email} - {u.role}
         </Typography>
       ))}
 
-      {/* STORES */}
       <Typography variant="h6">Stores</Typography>
       {stores.map((s) => (
         <Typography key={s.id}>

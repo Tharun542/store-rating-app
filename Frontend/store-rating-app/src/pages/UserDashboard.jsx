@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { Container, Typography, TextField, Button } from "@mui/material";
 import { AuthContext } from "../context/AuthContext";
 import { getAllStores } from "../services/StoreService";
@@ -14,11 +14,11 @@ export default function UserDashboard() {
   const [search, setSearch] = useState("");
   const [order, setOrder] = useState("ASC");
 
-  const fetchStores = async () => {
+  const fetchStores = useCallback(async () => {
     if (!user) return;
     const res = await getAllStores(user.token, search, order);
     setStores(res.data);
-  };
+  }, [user, search, order]);
 
   useEffect(() => {
     if (!user) {
@@ -26,7 +26,7 @@ export default function UserDashboard() {
       return;
     }
     fetchStores();
-  }, [user, search, order, navigate]);
+  }, [user, fetchStores, navigate]);
 
   return (
     <Container>
