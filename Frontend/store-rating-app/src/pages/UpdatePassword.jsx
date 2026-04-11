@@ -9,7 +9,7 @@ export default function UpdatePassword() {
     const token = localStorage.getItem("token");
 
     await axios.put(
-      "http://localhost:8089/api/auth/update-password",
+      "https://store-rating-app-x0zo.onrender.com/api/auth/update-password",
       { password },
       { headers: { Authorization: `Bearer ${token}` } }
     );
