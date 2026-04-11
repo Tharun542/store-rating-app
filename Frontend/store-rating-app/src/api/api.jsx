@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "http://localhost:8089/api",
+  baseURL: process.env.REACT_APP_API_URL || "https://store-rating-app-x0zo.onrender.com/api",
 });
 
 api.interceptors.request.use((config) => {
