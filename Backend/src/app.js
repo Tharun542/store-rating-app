@@ -5,7 +5,13 @@ const cors = require("cors");
 const app = express();
 
 // Middleware
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "https://store-rating-app-c4ek-git-main-godasu-tharuns-projects.vercel.app"
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // Routes
