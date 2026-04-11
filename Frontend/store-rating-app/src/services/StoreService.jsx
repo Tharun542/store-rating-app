@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:8089/api";
+const API = "https://store-rating-app-x0zo.onrender.com/api";
 
 export const getAllStores = (token, search = "", order = "ASC") =>
   axios.get(`${API}/store/all?search=${search}&order=${order}`, {
